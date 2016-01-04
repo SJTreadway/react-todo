@@ -1,0 +1,26 @@
+{
+  "name": "react-todo",
+  "version": "1.0.0",
+  "description": "Mini Project 1: Todo List ============",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SJTreadway/react-todo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SJTreadway/react-todo/issues"
+  },
+  "homepage": "https://github.com/SJTreadway/react-todo#readme",
+  "dependencies": {
+    "react": "^0.14.5"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.13.2",
+    "webpack": "^1.12.9"
+  }
+}
