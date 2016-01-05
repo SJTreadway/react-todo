@@ -13,7 +13,7 @@ var AddItem = React.createClass({
 	},
 	handleSubmit(e) {
 		if (e.keyCode === 13) {
-			this.props.addItem(e.target.value);
+			this.props.add(e.target.value);
 			e.target.value = '';
 		}
 	},

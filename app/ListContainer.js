@@ -24,12 +24,27 @@ var ListContainer = React.createClass({
 	},
 
 	render() {
+		var styles = {
+			container: {
+			    border: "1px solid rgb(208, 208, 208)",
+			    marginTop: 10,
+			    marginBottom: 10,
+			    borderRadius: 5
+			},
+			remove: {
+			    top: 15,
+			    color: "rgb(222, 79, 79)",
+			    float: "left",
+			    cursor: 'pointer'
+			  }
+		};
 		return (
-			<div className="col-sm-6 col-md-offset-3">
+			<div style={styles.container} className="col-sm-6">
 	        <div className="col-sm-12">
-	          <h3 className="text-center"> Todo List </h3>
-	          <AddItem addItem={this.handleAddItem}/>
-	          <List items={this.state.list} remove={this.handleRemoveItem}/>
+	        	<span className="glyphicon glyphicon-remove" style={styles.remove} onClick={this.props.remove}></span>
+	        	<h3 className="text-center"> {this.props.title} </h3>
+	        	<AddItem add={this.handleAddItem}/>
+	        	<List items={this.state.list} remove={this.handleRemoveItem}/>
 	        </div>
 	      </div>
 		)

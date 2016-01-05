@@ -54,22 +54,53 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
-	var _ListContainer = __webpack_require__(160);
+	var _ListContainer = __webpack_require__(159);
 	
 	var _ListContainer2 = _interopRequireDefault(_ListContainer);
+	
+	var _AddList = __webpack_require__(162);
+	
+	var _AddList2 = _interopRequireDefault(_AddList);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var App = _react2.default.createClass({
 		displayName: 'App',
+		getInitialState: function getInitialState() {
+			return {
+				lists: []
+			};
+		},
+		addNewList: function addNewList(newList) {
+			this.setState({
+				lists: this.state.lists.concat({
+					newTitle: newList.listName,
+					index: this.state.lists.length
+				})
+			});
+		},
+		handleRemoveList: function handleRemoveList(index) {
+			var newLists = this.state.lists;
+			newLists.splice(index, 1);
+			this.setState({
+				lists: newLists
+			});
+		},
 		render: function render() {
+			var _this = this;
+	
+			var componentList = this.state.lists.map(function (item, index) {
+				return _react2.default.createElement(_ListContainer2.default, { title: item.newTitle, index: index, key: item.index, remove: _this.handleRemoveList });
+			});
+	
 			return _react2.default.createElement(
 				'div',
 				{ className: 'container' },
 				_react2.default.createElement(
 					'div',
 					{ className: 'row' },
-					_react2.default.createElement(_ListContainer2.default, null)
+					_react2.default.createElement(_AddList2.default, { add: this.addNewList }),
+					componentList
 				)
 			);
 		}
@@ -19680,52 +19711,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var AddItem = _react2.default.createClass({
-		displayName: 'AddItem',
-		getInitialState: function getInitialState() {
-			return {
-				newItem: ''
-			};
-		},
-		handleChange: function handleChange(e) {
-			this.setState({
-				newItem: e.target.value
-			});
-		},
-		handleSubmit: function handleSubmit(e) {
-			if (e.keyCode === 13) {
-				this.props.addItem(e.target.value);
-				e.target.value = '';
-			}
-		},
-		render: function render() {
-			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement('input', { onChange: this.handleChange, onKeyDown: this.handleSubmit, placeholder: 'new item', className: 'form-control' })
-			);
-		}
-	});
-	
-	exports.default = AddItem;
-
-/***/ },
-/* 160 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _AddItem = __webpack_require__(159);
+	var _AddItem = __webpack_require__(160);
 	
 	var _AddItem2 = _interopRequireDefault(_AddItem);
 	
@@ -19755,18 +19741,35 @@
 			});
 		},
 		render: function render() {
+			var styles = {
+				container: {
+					border: "1px solid rgb(208, 208, 208)",
+					marginTop: 10,
+					marginBottom: 10,
+					borderRadius: 5
+				},
+				remove: {
+					top: 15,
+					color: "rgb(222, 79, 79)",
+					float: "left",
+					cursor: 'pointer'
+				}
+			};
 			return _react2.default.createElement(
 				'div',
-				{ className: 'col-sm-6 col-md-offset-3' },
+				{ style: styles.container, className: 'col-sm-6' },
 				_react2.default.createElement(
 					'div',
 					{ className: 'col-sm-12' },
+					_react2.default.createElement('span', { className: 'glyphicon glyphicon-remove', style: styles.remove, onClick: this.props.remove }),
 					_react2.default.createElement(
 						'h3',
 						{ className: 'text-center' },
-						' Todo List '
+						' ',
+						this.props.title,
+						' '
 					),
-					_react2.default.createElement(_AddItem2.default, { addItem: this.handleAddItem }),
+					_react2.default.createElement(_AddItem2.default, { add: this.handleAddItem }),
 					_react2.default.createElement(_List2.default, { items: this.state.list, remove: this.handleRemoveItem })
 				)
 			);
@@ -19774,6 +19777,51 @@
 	});
 	
 	exports.default = ListContainer;
+
+/***/ },
+/* 160 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var AddItem = _react2.default.createClass({
+		displayName: 'AddItem',
+		getInitialState: function getInitialState() {
+			return {
+				newItem: ''
+			};
+		},
+		handleChange: function handleChange(e) {
+			this.setState({
+				newItem: e.target.value
+			});
+		},
+		handleSubmit: function handleSubmit(e) {
+			if (e.keyCode === 13) {
+				this.props.add(e.target.value);
+				e.target.value = '';
+			}
+		},
+		render: function render() {
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement('input', { onChange: this.handleChange, onKeyDown: this.handleSubmit, placeholder: 'new item', className: 'form-control' })
+			);
+		}
+	});
+	
+	exports.default = AddItem;
 
 /***/ },
 /* 161 */
@@ -19850,6 +19898,67 @@
 	});
 	
 	exports.default = List;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var AddList = _react2.default.createClass({
+		displayName: 'AddList',
+		getInitialState: function getInitialState() {
+			return {
+				listName: ''
+			};
+		},
+		handleChange: function handleChange(e) {
+			this.setState({
+				listName: e.target.value
+			});
+		},
+		handleSubmit: function handleSubmit(e) {
+			e.preventDefault();
+			this.props.add(this.state);
+			this.setState({
+				listName: ''
+			});
+		},
+		render: function render() {
+			return _react2.default.createElement(
+				'form',
+				{ className: 'col-sm-6', onSubmit: this.handleSubmit },
+				_react2.default.createElement(
+					'h3',
+					{ className: 'text-center' },
+					'Create New List'
+				),
+				_react2.default.createElement(
+					'p',
+					null,
+					'List Name:'
+				),
+				_react2.default.createElement('input', { className: 'form-control', value: this.state.listName, placeholder: 'List Name', onChange: this.handleChange }),
+				_react2.default.createElement(
+					'button',
+					{ type: 'submit', className: 'btn btn-primary' },
+					'Submit'
+				)
+			);
+		}
+	});
+	
+	exports.default = AddList;
 
 /***/ }
 /******/ ]);
